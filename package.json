@@ -1,6 +1,6 @@
 {
     "name": "encrypt-server",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "An encryption service",
     "author": "jackchendong",
     "license": "UNLICENSED",
