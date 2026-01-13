@@ -13,6 +13,7 @@ export const sysEnv = (): string => {
 type Config = {
     port: number;
     masterSecret: string;
+    ipWhitelist?: string[]; // IP 白名单，支持精确 IP 和 CIDR 格式
 };
 
 export let APPConfig: Config = {} as Config;
