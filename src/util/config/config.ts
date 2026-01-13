@@ -29,4 +29,13 @@ export const initializeConfig = async () => {
         .reduce((prev: Config, curr: Config) => {
             return _.merge(prev, curr);
         });
+
+    // 配置校验
+    validateConfig(APPConfig);
 };
+
+function validateConfig(config: Config): void {
+    if (!config.masterSecret || config.masterSecret.trim() === '') {
+        throw new Error('Configuration error: masterSecret is required');
+    }
+}
