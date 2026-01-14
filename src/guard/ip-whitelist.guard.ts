@@ -112,13 +112,15 @@ export class IpWhitelistGuard implements CanActivate {
     private ipv4InCidr(ip: string, range: string, mask: number): boolean {
         const ipNum = this.ipv4ToNumber(ip);
         const rangeNum = this.ipv4ToNumber(range);
-        const maskNum = ~(2 ** (32 - mask) - 1);
+        // 转换为无符号整数
+        const maskNum = (~(2 ** (32 - mask) - 1)) >>> 0;
 
         return (ipNum & maskNum) === (rangeNum & maskNum);
     }
 
     private ipv4ToNumber(ip: string): number {
         const parts = ip.split('.').map(Number);
-        return (parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3];
+         // 转换为无符号整数
+        return ((parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3]) >>> 0;
     }
 }
