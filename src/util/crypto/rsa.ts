@@ -1,10 +1,7 @@
 import forge from 'node-forge';
 import crypto from 'crypto';
 
-export const generateRSAKeyPairFromSeed = (
-    seed: Buffer,
-    bits = 2048,
-): forge.pki.rsa.KeyPair => {
+export const generateRSAKeyPairFromSeed = (seed: Buffer, bits = 2048): forge.pki.rsa.KeyPair => {
     const prng = forge.random.createInstance();
     let counter = 0;
     const seedBuffer = seed;
@@ -14,12 +11,7 @@ export const generateRSAKeyPairFromSeed = (
         while (result.length < count) {
             const hmac = crypto.createHmac('sha256', seedBuffer);
             hmac.update(
-                Buffer.from([
-                    (counter >> 24) & 0xff,
-                    (counter >> 16) & 0xff,
-                    (counter >> 8) & 0xff,
-                    counter & 0xff,
-                ]),
+                Buffer.from([(counter >> 24) & 0xff, (counter >> 16) & 0xff, (counter >> 8) & 0xff, counter & 0xff]),
             );
             const hash = hmac.digest();
             for (let i = 0; i < hash.length && result.length < count; i++) {

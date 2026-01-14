@@ -20,9 +20,7 @@ export let APPConfig: Config = {} as Config;
 
 export const initializeConfig = async () => {
     const env = sysEnv();
-    const files = await glob(
-        path.join(__dirname, `../../../config.${env}.*.{yaml,yml}`),
-    );
+    const files = await glob(path.join(__dirname, `../../../config.${env}.*.{yaml,yml}`));
 
     APPConfig = [path.join(__dirname, `../../../config.${env}.yaml`), ...files]
         .map((file: string) => fs.readFileSync(file, 'utf8'))

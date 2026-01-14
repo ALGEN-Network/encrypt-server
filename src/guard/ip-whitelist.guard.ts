@@ -1,10 +1,4 @@
-import {
-    CanActivate,
-    ExecutionContext,
-    ForbiddenException,
-    Injectable,
-    Logger,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { Request } from 'express';
 import { APPConfig } from '../util/config/config';
 
@@ -30,9 +24,7 @@ export class IpWhitelistGuard implements CanActivate {
         }
 
         this.logger.warn(`Blocked request from IP: ${clientIp}`);
-        throw new ForbiddenException(
-            `Access denied: IP ${clientIp} is not in the whitelist`,
-        );
+        throw new ForbiddenException(`Access denied: IP ${clientIp} is not in the whitelist`);
     }
 
     /**
@@ -43,9 +35,7 @@ export class IpWhitelistGuard implements CanActivate {
         const xForwardedFor = request.headers['x-forwarded-for'];
         if (xForwardedFor) {
             // X-Forwarded-For 可能包含多个 IP，取第一个（真实客户端 IP）
-            const ips = Array.isArray(xForwardedFor)
-                ? xForwardedFor[0]
-                : xForwardedFor.split(',')[0];
+            const ips = Array.isArray(xForwardedFor) ? xForwardedFor[0] : xForwardedFor.split(',')[0];
             return ips.trim();
         }
 
@@ -113,14 +103,14 @@ export class IpWhitelistGuard implements CanActivate {
         const ipNum = this.ipv4ToNumber(ip);
         const rangeNum = this.ipv4ToNumber(range);
         // 转换为无符号整数
-        const maskNum = (~(2 ** (32 - mask) - 1)) >>> 0;
+        const maskNum = ~(2 ** (32 - mask) - 1) >>> 0;
 
         return (ipNum & maskNum) === (rangeNum & maskNum);
     }
 
     private ipv4ToNumber(ip: string): number {
         const parts = ip.split('.').map(Number);
-         // 转换为无符号整数
+        // 转换为无符号整数
         return ((parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3]) >>> 0;
     }
 }
